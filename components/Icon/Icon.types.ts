@@ -7,6 +7,15 @@ export type IconProps = {
 
 export type IconName = 'home' | 'transfer' | 'menu';
 
+export type IconComponentProps = {
+  name: IconName;
+  active?: boolean;
+  inactive?: boolean;
+  size?: number;
+  activeColor?: string;
+  inactiveColor?: string;
+};
+
 export type DynamicIconProps = {
   name: IconName;
   isActive?: boolean;

@@ -1,12 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-native';
-import { View, Text, StyleSheet } from 'react-native';
-import { Icon, HomeIcon, TransferIcon, MenuIcon } from './Icon';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import { Icon } from './Icon';
+import { IconName } from './Icon.types';
+import { availableIcons } from './iconRegistry';
 import { ThemeProvider } from '../../theme/ThemeContext';
 import { ThemeSelector } from '../../theme/ThemeSelector';
 
 const meta = {
   title: 'Icon',
   component: Icon,
+  args: {
+    name: 'home',
+    isActive: false,
+    size: 32,
+  },
   decorators: [
     (Story) => (
       <ThemeProvider>
@@ -25,105 +33,139 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-// Icon Component Stories
-export const HomeActive: Story = {
-  args: {
-    name: 'home',
-    isActive: true,
-  },
-};
-
-export const HomeInactive: Story = {
+export const Basic: Story = {
   args: {
     name: 'home',
     isActive: false,
   },
 };
 
-export const TransferActive: Story = {
+export const Active: Story = {
+  args: {
+    name: 'home',
+    isActive: true,
+  },
+};
+
+export const Inactive: Story = {
+  args: {
+    name: 'home',
+    isActive: false,
+  },
+};
+
+export const LargeSize: Story = {
   args: {
     name: 'transfer',
-    isActive: true,
-  },
-};
-
-export const TransferInactive: Story = {
-  args: {
-    name: 'transfer',
-    isActive: false,
-  },
-};
-
-export const MenuActive: Story = {
-  args: {
-    name: 'menu',
-    isActive: true,
-  },
-};
-
-export const MenuInactive: Story = {
-  args: {
-    name: 'menu',
-    isActive: false,
-  },
-};
-
-export const CustomSize: Story = {
-  args: {
-    name: 'home',
     isActive: true,
     size: 48,
   },
 };
 
-export const CustomColors: Story = {
+export const SmallSize: Story = {
   args: {
-    name: 'transfer',
-    isActive: true,
-    activeColor: '#FF0000',
-    inactiveColor: '#0000FF',
+    name: 'menu',
+    isActive: false,
+    size: 20,
   },
 };
 
-// Showcase all icons
-export const AllIcons: Story = {
+// Selector interactivo de iconos
+export const IconSelector: Story = {
   args: {
     name: 'home',
   },
-  render: () => (
-    <View style={styles.showcase}>
-      <View style={styles.row}>
-        <View style={styles.iconBox}>
-          <HomeIcon color="#575651" size={32} />
-          <Text style={styles.label}>Home Inactive</Text>
+  render: () => {
+    const [selectedIcon, setSelectedIcon] = useState<IconName>('home');
+    const [isActive, setIsActive] = useState(false);
+    const [size, setSize] = useState(32);
+
+    return (
+      <View style={styles.selectorContainer}>
+        <Text style={styles.title}>Icon Selector</Text>
+        
+        {/* Control de estado activo/inactivo */}
+        <View style={styles.controls}>
+          <Text style={styles.controlLabel}>Estado:</Text>
+          <View style={styles.buttonGroup}>
+            <TouchableOpacity
+              style={[styles.controlButton, !isActive && styles.controlButtonActive]}
+              onPress={() => setIsActive(false)}
+            >
+              <Text style={[styles.controlButtonText, !isActive && styles.controlButtonTextActive]}>
+                Inactive
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.controlButton, isActive && styles.controlButtonActive]}
+              onPress={() => setIsActive(true)}
+            >
+              <Text style={[styles.controlButtonText, isActive && styles.controlButtonTextActive]}>
+                Active
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.iconBox}>
-          <HomeIcon color="#EE8446" size={32} />
-          <Text style={styles.label}>Home Active</Text>
+
+        {/* Control de tamaño */}
+        <View style={styles.controls}>
+          <Text style={styles.controlLabel}>Tamaño: {size}px</Text>
+          <View style={styles.buttonGroup}>
+            <TouchableOpacity
+              style={[styles.controlButton, size === 20 && styles.controlButtonActive]}
+              onPress={() => setSize(20)}
+            >
+              <Text style={[styles.controlButtonText, size === 20 && styles.controlButtonTextActive]}>20</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.controlButton, size === 32 && styles.controlButtonActive]}
+              onPress={() => setSize(32)}
+            >
+              <Text style={[styles.controlButtonText, size === 32 && styles.controlButtonTextActive]}>32</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.controlButton, size === 48 && styles.controlButtonActive]}
+              onPress={() => setSize(48)}
+            >
+              <Text style={[styles.controlButtonText, size === 48 && styles.controlButtonTextActive]}>48</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Vista previa del icono seleccionado */}
+        <View style={styles.preview}>
+          <Icon name={selectedIcon} isActive={isActive} size={size} />
+          <Text style={styles.previewLabel}>
+            {availableIcons.find(i => i.name === selectedIcon)?.label}
+          </Text>
+          <Text style={styles.previewState}>
+            {isActive ? 'Active (#EE8446)' : 'Inactive (#575651)'}
+          </Text>
+        </View>
+
+        {/* Selector de iconos */}
+        <Text style={styles.sectionTitle}>Seleccionar Icono:</Text>
+        <View style={styles.iconGrid}>
+          {availableIcons.map((iconConfig) => (
+            <TouchableOpacity
+              key={iconConfig.name}
+              style={[
+                styles.iconBox,
+                selectedIcon === iconConfig.name && styles.iconBoxSelected,
+              ]}
+              onPress={() => setSelectedIcon(iconConfig.name)}
+            >
+              <Icon name={iconConfig.name} isActive={isActive} size={32} />
+              <Text style={styles.iconLabel}>{iconConfig.label}</Text>
+              {iconConfig.description && (
+                <Text style={styles.iconDescription}>{iconConfig.description}</Text>
+              )}
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
-      <View style={styles.row}>
-        <View style={styles.iconBox}>
-          <TransferIcon color="#575651" size={29} />
-          <Text style={styles.label}>Transfer Inactive</Text>
-        </View>
-        <View style={styles.iconBox}>
-          <TransferIcon color="#EE8446" size={29} />
-          <Text style={styles.label}>Transfer Active</Text>
-        </View>
-      </View>
-      <View style={styles.row}>
-        <View style={styles.iconBox}>
-          <MenuIcon color="#575651" size={29} />
-          <Text style={styles.label}>Menu Inactive</Text>
-        </View>
-        <View style={styles.iconBox}>
-          <MenuIcon color="#EE8446" size={29} />
-          <Text style={styles.label}>Menu Active</Text>
-        </View>
-      </View>
-    </View>
-  ),
+    );
+  },
 };
 
 const styles = StyleSheet.create({
@@ -132,13 +174,72 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  showcase: {
-    gap: 24,
+  selectorContainer: {
+    gap: 20,
   },
-  row: {
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 10,
+  },
+  controls: {
+    gap: 8,
+  },
+  controlLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+  },
+  buttonGroup: {
     flexDirection: 'row',
-    gap: 24,
-    justifyContent: 'center',
+    gap: 8,
+  },
+  controlButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 6,
+    backgroundColor: '#f0f0f0',
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  controlButtonActive: {
+    backgroundColor: '#EE8446',
+    borderColor: '#EE8446',
+  },
+  controlButtonText: {
+    fontSize: 14,
+    color: '#333',
+    fontWeight: '500',
+  },
+  controlButtonTextActive: {
+    color: '#fff',
+  },
+  preview: {
+    alignItems: 'center',
+    padding: 24,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 12,
+    gap: 8,
+  },
+  previewLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  previewState: {
+    fontSize: 12,
+    color: '#666',
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  iconGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 16,
   },
   iconBox: {
     alignItems: 'center',
@@ -147,10 +248,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     borderRadius: 8,
     minWidth: 120,
+    flex: 1,
+    borderWidth: 2,
+    borderColor: 'transparent',
   },
-  label: {
-    fontSize: 12,
+  iconBoxSelected: {
+    borderColor: '#EE8446',
+    backgroundColor: '#FFF5EF',
+  },
+  iconLabel: {
+    fontSize: 14,
+    fontWeight: '600',
     color: '#333',
+    textAlign: 'center',
+  },
+  iconDescription: {
+    fontSize: 10,
+    color: '#666',
     textAlign: 'center',
   },
 });
