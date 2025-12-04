@@ -31,7 +31,8 @@ export const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   disabled: {
-    opacity: 0.5,
+    backgroundColor: '#D1D5DB',
+    color: '#525252ff',
   },
   text: {
     textAlign: 'center',

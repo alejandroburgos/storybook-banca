@@ -4,6 +4,7 @@ import { View } from 'react-native';
 
 import AnimatedTextInput from './AnimatedTextInput';
 import { ThemeProvider } from '../../theme/ThemeContext';
+import { ThemeSelector } from '../../theme/ThemeSelector';
 
 const meta: Meta<typeof AnimatedTextInput> = {
   title: 'Inputs/AnimatedTextInput',
@@ -45,6 +46,7 @@ const meta: Meta<typeof AnimatedTextInput> = {
 
       return (
         <ThemeProvider>
+          <ThemeSelector />
           <View style={{ padding: 16 }}>
             <Story
               args={{

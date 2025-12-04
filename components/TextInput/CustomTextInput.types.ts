@@ -9,4 +9,7 @@ export type InputRefHandles = {
 export type TextInputPropTypes = TextInputProps & {
   accessibilityLabel: string;
   errorMessage?: string;
+  iconLeft?: React.ReactNode;
+  iconRight?: React.ReactNode;
+  onPress?: () => void;
 };

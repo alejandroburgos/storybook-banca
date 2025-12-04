@@ -1,0 +1,1 @@
+export type RegionType = 'english' | 'german' | 'norwegian' | 'dark' | 'newDesign';

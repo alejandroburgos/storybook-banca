@@ -1,3 +1,5 @@
+import { RegionType } from "./region.types";
+
 export const themes = {
   english: {
     primary: {
@@ -67,7 +69,24 @@ export const themes = {
       shadow: '#151515',
     },
   },
+  newDesign: {
+    primary: {
+      bg: '#661700',
+      text: '#FFFFFF',
+      shadow: '#CEC6B2',
+    },
+    secondary: {
+      bg: '#E4C1A9',
+      text: '#333333',
+      shadow: '#CEC6B2',
+    },
+    tertiary: {
+      bg: '#ECE9E1',
+      text: '#333333',
+      shadow: '#CEC6B2',
+    },
+  },
 } as const;
 
-export type ThemeName = keyof typeof themes;
+export type ThemeName = RegionType;
 export type ThemeVariant = 'primary' | 'secondary' | 'tertiary';

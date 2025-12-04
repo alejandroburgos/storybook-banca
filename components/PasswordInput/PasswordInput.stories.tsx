@@ -2,26 +2,24 @@ import type { Meta, StoryObj } from '@storybook/react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import CustomTextInput from './CustomTextInput';
+import PasswordInput from './PasswordInput';
 import { ThemeProvider } from '../../theme/ThemeContext';
 import { ThemeSelector } from '../../theme/ThemeSelector';
-import EmailIcon from '../../assets/icons/EmailIcon';
 
-const meta: Meta<typeof CustomTextInput> = {
-  title: 'Inputs/CustomTextInput',
-  component: CustomTextInput,
+const meta: Meta<typeof PasswordInput> = {
+  title: 'Inputs/PasswordInput',
+  component: PasswordInput,
 
   args: {
     placeholder: '',
     editable: true,
     errorMessage: undefined,
-    accessibilityLabel: 'input',
+    accessibilityLabel: 'password input',
     keyboardType: 'default',
-    secureTextEntry: false,
     autoCapitalize: 'none',
   },
 
-  argTypes: {
+argTypes: {
   onChangeText: { action: 'changed' },
   onFocus: { action: 'focus' },
   onBlur: { action: 'blur' },
@@ -84,42 +82,27 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   args: {
-    placeholder: 'Write something…',
+    placeholder: 'Password…',
   },
 };
 
 export const PreFilled: Story = {
   args: {
-    placeholder: 'Write something…',
-    value: 'Hello world',
+    placeholder: 'Password…',
+    value: '123456',
   },
 };
 
 export const WithError: Story = {
   args: {
-    placeholder: 'Invalid input',
-    errorMessage: 'This field is required',
+    placeholder: 'Password…',
+    errorMessage: 'Password is invalid',
   },
 };
 
 export const Disabled: Story = {
   args: {
-    placeholder: 'You cannot type here',
+    placeholder: 'Password…',
     editable: false,
-  },
-};
-
-export const EmailInput: Story = {
-  args: {
-    placeholder: 'Enter your email…',
-    keyboardType: 'email-address',
-    iconLeft: <EmailIcon />,
-  },
-};
-
-export const PasswordInput: Story = {
-  args: {
-    placeholder: 'Enter password…',
-    secureTextEntry: true,
   },
 };
