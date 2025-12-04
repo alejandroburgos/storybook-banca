@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { themes, ThemeName } from './colors';
+import { designSystem } from './designSystem';
 
 type ThemeContextType = {
   currentTheme: ThemeName;
   setTheme: (theme: ThemeName) => void;
-  theme: typeof themes[ThemeName];
+  theme: typeof themes[ThemeName] & typeof designSystem;
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -15,7 +16,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const value = {
     currentTheme,
     setTheme: setCurrentTheme,
-    theme: themes[currentTheme],
+    theme: { ...themes[currentTheme], ...designSystem },
   };
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
