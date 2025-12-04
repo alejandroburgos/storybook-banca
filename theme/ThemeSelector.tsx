@@ -6,7 +6,7 @@ import { ThemeName } from './colors';
 export const ThemeSelector = () => {
   const { currentTheme, setTheme } = useTheme();
 
-  const themes: ThemeName[] = ['english', 'german', 'norwegian', 'dark'];
+  const themes: ThemeName[] = ['english', 'german', 'norwegian', 'dark', 'newDesign'];
 
   return (
     <View style={styles.container}>

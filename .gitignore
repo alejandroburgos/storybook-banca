@@ -23,3 +23,7 @@ web-build/
 
 expo-env.d.ts
 # @end expo-cli
+
+#mobile-devices
+ios/
+android/
